@@ -2,6 +2,7 @@ from sqlalchemy.orm import Session
 from app.db import models, schemas
 from app.utils.password import hash_password
 from sqlalchemy.orm import joinedload
+from datetime import datetime
 
 def get_user_by_email(db: Session, email: str):
     return db.query(models.User).filter(models.User.email == email).first()
@@ -158,3 +159,36 @@ def get_tipos(db: Session):
 
 def get_incidentecombo(db: Session):
     return db.query(models.Incidente).all()
+
+#proyectocrud.py
+def get_prioridades(db: Session):
+    return db.query(models.Prioridad).all()
+
+def get_estados(db: Session):
+    return db.query(models.Estado).all()
+
+def get_proyectos(db: Session, skip: int = 0, limit: int = 100):
+    return db.query(models.Proyecto).offset(skip).limit(limit).all()
+
+def get_proyecto(db: Session, proyecto_id: int):
+    return db.query(models.Proyecto).filter(models.Proyecto.id == proyecto_id).first()
+
+def create_proyecto(db: Session, data: schemas.ProyectoCreate):
+    db_p = models.Proyecto(**data.dict(), fecha_registro=datetime.now())
+    db.add(db_p); db.commit(); db.refresh(db_p)
+    return db_p
+
+def update_proyecto(db: Session, proyecto_id: int, data: schemas.ProyectoUpdate):
+    p = db.query(models.Proyecto).filter(models.Proyecto.id == proyecto_id).first()
+    if not p: return None
+    for k,v in data.dict(exclude_unset=True).items():
+        setattr(p, k, v)
+    p.fecha_actualizacion = datetime.now()
+    db.commit(); db.refresh(p)
+    return p
+
+def delete_proyecto(db: Session, proyecto_id: int):
+    p = db.query(models.Proyecto).filter(models.Proyecto.id == proyecto_id).first()
+    if not p: return None
+    db.delete(p); db.commit()
+    return p

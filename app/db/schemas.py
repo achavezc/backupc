@@ -199,3 +199,50 @@ class ClasificacionIncidenteOut(ClasificacionIncidenteBase):
     
     class Config:
         orm_mode = True
+
+#proyecto.py
+class PrioridadOut(BaseModel):
+    id: int
+    nombre: str
+    class Config:
+        orm_mode = True
+
+class EstadoOut(BaseModel):
+    id: int
+    nombre: str
+    class Config:
+        orm_mode = True
+
+class ProyectoBase(BaseModel):
+    nombre: str
+    fecha_inicio: date
+    fecha_fin: date
+    sistema_id: Optional[int]
+    prioridad_id: int
+    faseproyecto_id: int
+    estado_id: int
+
+class ProyectoCreate(ProyectoBase):
+    usuario_registro: str
+
+class ProyectoUpdate(BaseModel):
+    nombre: Optional[str]
+    fecha_inicio: Optional[date]
+    fecha_fin: Optional[date]
+    sistema_id: Optional[int]
+    prioridad_id: Optional[int]
+    faseproyecto_id: Optional[int]
+    estado_id: Optional[int]
+    usuario_actualizacion: Optional[str]
+
+class ProyectoOut(ProyectoBase):
+    id: int
+    usuario_registro: str
+    fecha_registro: datetime
+    usuario_actualizacion: Optional[str]
+    fecha_actualizacion: Optional[datetime]
+    prioridad: PrioridadOut
+    fase_proyecto: PrioridadOut  # Aprovecha el mismo esquema
+    estado: EstadoOut
+    class Config:
+        orm_mode = True

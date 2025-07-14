@@ -97,3 +97,33 @@ class ClasificacionIncidente(Base):
     faseproyecto = relationship("FaseProyecto")
     impacto = relationship("Impacto")
     tipo = relationship("Tipo")
+
+# proyecto 
+class Prioridad(Base):
+    __tablename__ = "prioridad"
+    id = Column(Integer, primary_key=True, index=True)
+    nombre = Column(String(50), nullable=False)
+
+class Estado(Base):
+    __tablename__ = "estado"
+    id = Column(Integer, primary_key=True, index=True)
+    nombre = Column(String(50), nullable=False)
+
+class Proyecto(Base):
+    __tablename__ = "proyecto"
+    id = Column(Integer, primary_key=True, index=True)
+    nombre = Column(String(100), nullable=False)
+    fecha_inicio = Column(Date, nullable=False)
+    fecha_fin = Column(Date, nullable=False)
+    sistema_id = Column(Integer)  # si luego es FK, agregarlo
+    prioridad_id = Column(Integer, ForeignKey("prioridad.id"))
+    faseproyecto_id = Column(Integer, ForeignKey("fase_proyecto.id"))
+    estado_id = Column(Integer, ForeignKey("estado.id"))
+    usuario_registro = Column(String(100), nullable=False)
+    fecha_registro = Column(TIMESTAMP, nullable=False)
+    usuario_actualizacion = Column(String(100))
+    fecha_actualizacion = Column(TIMESTAMP)
+
+    prioridad = relationship("Prioridad")
+    fase_proyecto = relationship("FaseProyecto")
+    estado = relationship("Estado")
