@@ -1,0 +1,1 @@
+psycopg2==9999.0  # Inexistente para evitar su instalación
