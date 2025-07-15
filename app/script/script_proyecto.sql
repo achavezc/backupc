@@ -16,7 +16,6 @@ CREATE TABLE proyecto (
     nombre VARCHAR(100) NOT NULL,
     fecha_inicio DATE NOT NULL,
     fecha_fin DATE NOT NULL,
-    sistema_id INTEGER,
     prioridad_id INTEGER REFERENCES prioridad(id),
     faseproyecto_id INTEGER REFERENCES fase_proyecto(id),
     estado_id INTEGER REFERENCES estado(id),
@@ -42,9 +41,9 @@ INSERT INTO estado (nombre) VALUES
 
 -- Insertar datos de prueba en Proyecto
 INSERT INTO proyecto (
-    nombre, fecha_inicio, fecha_fin, sistema_id, prioridad_id,
+    nombre, fecha_inicio, fecha_fin, prioridad_id,
     faseproyecto_id, estado_id, usuario_registro, fecha_registro
 ) VALUES
-('Proyecto A', '2025-01-01', '2025-06-30', 1, 1, 1, 1, 'admin', NOW()),
-('Proyecto B', '2025-03-01', '2025-09-15', 2, 2, 2, 2, 'admin', NOW()),
-('Proyecto C', '2025-05-15', '2025-12-31', 3, 3, 3, 3, 'admin', NOW());
+('Proyecto A', '2025-01-01', '2025-06-30', 1, 1, 1, 'admin', NOW()),
+('Proyecto B', '2025-03-01', '2025-09-15', 2, 2, 2, 'admin', NOW()),
+('Proyecto C', '2025-05-15', '2025-12-31', 3, 3, 3, 'admin', NOW());

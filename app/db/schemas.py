@@ -217,7 +217,6 @@ class ProyectoBase(BaseModel):
     nombre: str
     fecha_inicio: date
     fecha_fin: date
-    sistema_id: Optional[int]
     prioridad_id: int
     faseproyecto_id: int
     estado_id: int
@@ -229,7 +228,6 @@ class ProyectoUpdate(BaseModel):
     nombre: Optional[str]
     fecha_inicio: Optional[date]
     fecha_fin: Optional[date]
-    sistema_id: Optional[int]
     prioridad_id: Optional[int]
     faseproyecto_id: Optional[int]
     estado_id: Optional[int]
@@ -246,3 +244,59 @@ class ProyectoOut(ProyectoBase):
     estado: EstadoOut
     class Config:
         orm_mode = True
+
+#recomendaciones
+class RecomendacionBase(BaseModel):
+    incidente_id: int
+    prioridad_id: int
+    faseproyecto_id: int
+    tipoaccion_id: int
+    frecuencia_id: int
+    recomendacion: str
+
+class RecomendacionCreate(RecomendacionBase):
+    usuario_registro: str
+
+class RecomendacionUpdate(BaseModel):
+    prioridad_id: Optional[int]
+    faseproyecto_id: Optional[int]
+    tipoaccion_id: Optional[int]
+    frecuencia_id: Optional[int]
+    recomendacion: Optional[str]
+    usuario_actualizacion: Optional[str]
+
+
+class TipoAccionOut(BaseModel):
+    id: int
+    nombre: str
+    class Config:
+        orm_mode = True
+
+class FrecuenciaOut(BaseModel):
+    id: int
+    nombre: str
+    class Config:
+        orm_mode = True
+
+
+class RecomendacionOut(RecomendacionBase):
+    id: int
+    usuario_registro: Optional[str]
+    fecha_registro: Optional[datetime]
+    usuario_actualizacion: Optional[str]
+    fecha_actualizacion: Optional[datetime]
+    incidente: IncidenteOut
+    prioridad: PrioridadOut
+    fase_proyecto: PrioridadOut  # Aprovecha el mismo esquema
+    tipo_accion: TipoAccionOut
+    frecuencia: FrecuenciaOut
+    class Config:
+        orm_mode = True
+
+class ComboOut(BaseModel):
+    id: int
+    nombre: str
+
+    class Config:
+        orm_mode = True
+

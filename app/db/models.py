@@ -60,7 +60,6 @@ class Incidente(Base):
     fecha_registro = Column(TIMESTAMP)
     usuario_actualizacion = Column(String)
     fecha_actualizacion = Column(TIMESTAMP)
-
     sistema = relationship("Sistema")
     proyecto_modulo = relationship("ProyectoModulo")
 
@@ -115,7 +114,6 @@ class Proyecto(Base):
     nombre = Column(String(100), nullable=False)
     fecha_inicio = Column(Date, nullable=False)
     fecha_fin = Column(Date, nullable=False)
-    sistema_id = Column(Integer)  # si luego es FK, agregarlo
     prioridad_id = Column(Integer, ForeignKey("prioridad.id"))
     faseproyecto_id = Column(Integer, ForeignKey("fase_proyecto.id"))
     estado_id = Column(Integer, ForeignKey("estado.id"))
@@ -127,3 +125,34 @@ class Proyecto(Base):
     prioridad = relationship("Prioridad")
     fase_proyecto = relationship("FaseProyecto")
     estado = relationship("Estado")
+
+#recomendaciones
+class TipoAccion(Base):
+    __tablename__ = "tipo_accion"
+    id = Column(Integer, primary_key=True)
+    nombre = Column(String, nullable=False)
+
+class Frecuencia(Base):
+    __tablename__ = "frecuencia"
+    id = Column(Integer, primary_key=True)
+    nombre = Column(String, nullable=False)
+
+class Recomendacion(Base):
+    __tablename__ = "recomendacion"
+    id = Column(Integer, primary_key=True, index=True)
+    incidente_id = Column(Integer, ForeignKey("incidente.id"))
+    prioridad_id = Column(Integer, ForeignKey("prioridad.id"))
+    faseproyecto_id = Column(Integer, ForeignKey("fase_proyecto.id"))
+    tipoaccion_id = Column(Integer, ForeignKey("tipo_accion.id"))
+    frecuencia_id = Column(Integer, ForeignKey("frecuencia.id"))
+    recomendacion = Column(Text, nullable=False)
+    usuario_registro = Column(String)
+    fecha_registro = Column(TIMESTAMP)
+    usuario_actualizacion = Column(String)
+    fecha_actualizacion = Column(TIMESTAMP)
+
+    incidente = relationship("Incidente")
+    prioridad = relationship("Prioridad")
+    fase_proyecto = relationship("FaseProyecto")
+    tipo_accion = relationship("TipoAccion")
+    frecuencia = relationship("Frecuencia")

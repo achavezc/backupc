@@ -192,3 +192,39 @@ def delete_proyecto(db: Session, proyecto_id: int):
     if not p: return None
     db.delete(p); db.commit()
     return p
+
+#recomendaciones
+def get_recomendaciones(db: Session, skip: int = 0, limit: int = 100):
+    return db.query(models.Recomendacion).offset(skip).limit(limit).all()
+
+def create_recomendacion(db: Session, data: schemas.RecomendacionCreate):
+    nueva = models.Recomendacion(**data.dict(), fecha_registro=datetime.utcnow())
+    db.add(nueva)
+    db.commit()
+    db.refresh(nueva)
+    return nueva
+
+def update_recomendacion(db: Session, recomendacion_id: int, data: schemas.RecomendacionUpdate):
+    recomendacion = db.query(models.Recomendacion).filter(models.Recomendacion.id == recomendacion_id).first()
+    if not recomendacion:
+        return None
+    for key, value in data.dict(exclude_unset=True).items():
+        setattr(recomendacion, key, value)
+    recomendacion.fecha_actualizacion = datetime.utcnow()
+    db.commit()
+    db.refresh(recomendacion)
+    return recomendacion
+
+def delete_recomendacion(db: Session, recomendacion_id: int):
+    recomendacion = db.query(models.Recomendacion).filter(models.Recomendacion.id == recomendacion_id).first()
+    if not recomendacion:
+        return None
+    db.delete(recomendacion)
+    db.commit()
+    return recomendacion
+
+def list_tipo_accion(db: Session):
+    return db.query(models.TipoAccion).all()
+
+def list_frecuencia(db: Session):
+    return db.query(models.Frecuencia).all()
